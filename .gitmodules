@@ -1,0 +1,12 @@
+[submodule "submodules/CRCpp"]
+	path = submodules/CRCpp
+	url = https://github.com/d-bahr/CRCpp.git
+[submodule "submodules/Serialib"]
+	path = submodules/Serialib
+	url = https://github.com/imabot2/serialib.git
+[submodule "submodules/zlib"]
+	path = submodules/zlib
+	url = https://github.com/madler/zlib.git
+[submodule "submodules/json"]
+	path = submodules/json
+	url = https://github.com/nlohmann/json.git
