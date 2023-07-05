@@ -59,7 +59,10 @@ public:
 	TSCpp* GetInstance() { return instance; };
 
 	// Waits for TSC++ to finish
-	void WaitForThread();
+	void WaitForThreads();
+
+	// Tells the TSC++ thread to stop on the next loop
+	void StopThreads();
 
 	// Writes a byte to serial
 	void Write(char value);
@@ -90,7 +93,10 @@ private:
 	DEEPROM EEPROM;
 
 	std::thread recvThread;
+	std::thread timerThread;
 
+	uint32_t loops = 0;
+	bool quit = false;
 	bool allowLegacy = true;
 
 	int serialPayloadLength;
@@ -111,6 +117,7 @@ private:
 
 	uint64_t milis();
 	void threadFn();
+	void timerFn();
 
 	// ~~Straight up ported from Speeduino:~~
 	Pages pages;

@@ -39,6 +39,9 @@ int main() {
 	// Wait for TSCpp thread to finish (never)
 	tscpp.WaitForThread();
 
+	// To stop the thread whenever you like use this:
+	// tscpp.StopThread();
+
 	return 0;
 }
 ```

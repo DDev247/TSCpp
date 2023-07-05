@@ -47,8 +47,8 @@ void TSCpp::LegacyComms(char c) {
         break;
 
     case 'c': //Send the current loops/sec value
-        Write((char)1);
-        Write((char)1);
+        Write((char)lowByte(currentStatus.loopsPerSecond));
+        Write((char)highByte(currentStatus.loopsPerSecond));
         break;
 
     case 'd': // Send a CRC32 hash of a given page

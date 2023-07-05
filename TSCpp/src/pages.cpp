@@ -12,7 +12,7 @@ void Pages::InitPages() {
 
     for (int i = 0; i < count; i++) {
         uint16_t size = getPageSize(i);
-        std::fstream file = std::fstream("page" + std::to_string(i) + ".bin", std::ios::binary | std::ios::out);
+        std::fstream file = std::fstream("tscpp/page" + std::to_string(i) + ".bin", std::ios::binary | std::ios::out);
         if (!file) {
             std::cerr << "Failed to open Page file." << std::endl;
         }
@@ -48,7 +48,7 @@ uint32_t Pages::calculatePageCRC32(byte pageNum) {
 }
 
 uint8_t Pages::getPageValue(uint8_t pageNum, uint16_t offset) {
-    std::fstream file = std::fstream("page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
+    std::fstream file = std::fstream("tscpp/page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
     if (!file) {
         std::cerr << "Failed to open Page file." << std::endl;
         return 0;
@@ -60,7 +60,7 @@ uint8_t Pages::getPageValue(uint8_t pageNum, uint16_t offset) {
 }
 
 uint8_t* Pages::getPage(uint8_t pageNum) {
-    std::fstream file = std::fstream("page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
+    std::fstream file = std::fstream("tscpp/page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
     if (!file) {
         std::cerr << "Failed to open Page file." << std::endl;
         return 0;
@@ -73,7 +73,7 @@ uint8_t* Pages::getPage(uint8_t pageNum) {
 }
 
 void Pages::setPageValues(uint8_t pageNum, uint16_t offset, char* buffer, uint16_t length, int buffOffset) {
-    std::fstream file = std::fstream("page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
+    std::fstream file = std::fstream("tscpp/page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
     if (!file) {
         std::cerr << "Failed to open Page file." << std::endl;
         return;
@@ -90,7 +90,7 @@ void Pages::setPageValues(uint8_t pageNum, uint16_t offset, char* buffer, uint16
 }
 
 void Pages::setPage(uint8_t pageNum, uint8_t* buf) {
-    std::fstream file = std::fstream("page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
+    std::fstream file = std::fstream("tscpp/page" + std::to_string(pageNum) + ".bin", std::ios::binary | std::ios::in | std::ios::out);
     if (!file) {
         std::cerr << "Failed to open Page file." << std::endl;
         return;

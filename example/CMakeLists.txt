@@ -2,7 +2,8 @@
 # Add source to this project's executable.
 add_executable (TSCppExample
 	"src/main.cpp"
-	"include/main.h")
+	"include/main.h"
+)
 
 # Add library to project.
 target_link_libraries (TSCppExample TSCpp)

@@ -4,6 +4,9 @@
 
 void TSCpp::threadFn() {
 	while (true) {
+        if (quit)
+            break;
+
 		if (Serial.available() > 0) {
             /*if (currentStatus.RPM >= 6000) {
                 currentStatus.longRPM = 0;
@@ -33,5 +36,11 @@ void TSCpp::threadFn() {
                 Comms(c);
             }
 		}
+
+        loops++;
 	}
+
+    Log.Add("Stopping main recv loop...");
+    Log.Add("Closing Serial device...");
+    Serial.closeDevice();
 }

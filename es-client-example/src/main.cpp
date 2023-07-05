@@ -8,6 +8,7 @@ int main() {
 	TSCpp tscpp("COM3", 115200);
 
 	while (true) {
+        // Connect to ES-Client pipe...
         HANDLE hPipe = CreateNamedPipe(TEXT("\\\\.\\pipe\\est-input-pipe"),
             PIPE_ACCESS_DUPLEX,
             PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT,
@@ -20,6 +21,10 @@ int main() {
         if (hPipe == INVALID_HANDLE_VALUE)
         {
             std::cout << "Failed to create named pipe. Error code: " << GetLastError() << std::endl;
+            CloseHandle(hPipe);
+            
+            // If pipe failed continue loop but notify TS (happens often because of desync or other issues)
+            tscpp.currentStatus.hasSync = false;
             continue;
             //return 1;
         }
@@ -28,6 +33,9 @@ int main() {
         {
             std::cout << "Failed to connect named pipe. Error code: " << GetLastError() << std::endl;
             CloseHandle(hPipe);
+
+            // If pipe failed continue loop but notify TS (happens often because of desync or other issues)
+            tscpp.currentStatus.hasSync = false;
             continue;
             //return 1;
         }
@@ -37,6 +45,8 @@ int main() {
         BOOL success = ReadFile(hPipe, buffer, sizeof(buffer), &bytesRead, NULL);
         if (success && bytesRead > 0)
         {
+            tscpp.currentStatus.hasSync = true;
+
             std::string line(buffer, bytesRead);
 
             json j = json::parse(line);
@@ -72,13 +82,15 @@ int main() {
         }
         else
         {
+            // If pipe failed continue loop but notify TS (happens often because of desync or other issues)
             std::cout << "Failed to read from the pipe. Error code: " << GetLastError() << std::endl;
+            tscpp.currentStatus.hasSync = false;
         }
 
         CloseHandle(hPipe);
     }
 
-    tscpp.WaitForThread();
+    tscpp.WaitForThreads();
 
     tscpp.~TSCpp();
 	return 0;

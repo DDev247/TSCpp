@@ -5,7 +5,7 @@
 
 DLog::DLog() {
 	logs = std::list<std::string>();
-	logFile = std::ofstream("log.txt");
+	logFile = std::ofstream("tscpp/log.txt");
 }
 
 std::string DLog::Prepare(std::string log) {
@@ -16,9 +16,9 @@ std::string DLog::Prepare(std::string log) {
 	ss << "[" << currentTimeString << "] -> " << log;
 	
 	std::string logString = ss.str();
-#if _DEBUG or TSCPP_LOGGING_ENABLED
+//#ifdef _DEBUG
 	std::cout << ss.str() << std::endl;
-#endif // _DEBUG or TSCPP_LOGGING_ENABLED
+//#endif // _DEBUG
 
 	return ss.str();
 }
@@ -43,6 +43,7 @@ void DLog::Dump(int amount) {
 		logFile << logs.front() << std::endl;
 		logs.pop_front();
 	}
+	logFile.flush();
 }
 
 void DLog::DumpAll() {
@@ -52,4 +53,5 @@ void DLog::DumpAll() {
 		logFile << logs.front() << std::endl;
 		logs.pop_front();
 	}
+	logFile.flush();
 }
