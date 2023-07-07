@@ -3,7 +3,7 @@
 
 #include "../../submodules/Serialib/lib/serialib.h"
 #include <thread>
-#include <CRC.h>
+#include "../../submodules/CRCpp/inc/CRC.h"
 
 #include "types.h"
 
