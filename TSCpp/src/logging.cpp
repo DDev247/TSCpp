@@ -9,8 +9,8 @@ DLog::DLog() {
 }
 
 std::string DLog::Prepare(std::string log) {
-	std::time_t currentTime = std::time(nullptr);
-	std::string currentTimeString = std::ctime(&currentTime);
+	time_t currentTime = time(nullptr);
+	std::string currentTimeString = ctime(&currentTime);
 	currentTimeString.erase(currentTimeString.find_last_not_of("\n") + 1);
 	std::stringstream ss;
 	ss << "[" << currentTimeString << "] -> " << log;

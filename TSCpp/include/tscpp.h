@@ -5,11 +5,16 @@
 #include <thread>
 #include <CRC.h>
 
+#include "types.h"
+
 // include internal header files...
 #include "logging.h"
 #include "pages.h"
+#include "page_crc.h"
 #include "eeprom.h"
-#include "status.h"
+#include "globals.h"
+#include "statuses.h"
+#include "storage.h"
 
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
@@ -39,15 +44,7 @@ const char canId[] = { SERIAL_RC_OK, 0 };
 const char codeVersion[] = { SERIAL_RC_OK, 's','p','e','e','d','u','i','n','o',' ','2','0','2','3','0','5' }; //Note no null terminator in array and statu variable at the start
 //const char productString[] = { SERIAL_RC_OK, 'F', 'a', 'k', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '3', '.', '0', '6' };
 const char productString[] = { SERIAL_RC_OK, 'S', 'p', 'e', 'e', 'd', 'u', 'i', 'n', 'o', ' ', '2', '0', '2', '3', '.', '0', '5' };
-const char testCommsResponse[] = { SERIAL_RC_OK, 255 };
-
-#define UPDC32(octet, crc) (crc_32_tab[((crc) ^ (octet)) & 0xff] ^ ((crc) >> 8))
-
-inline const CRC::Parameters<crcpp_uint32, 32>& CRC_32_JAVA()
-{
-	static const CRC::Parameters<crcpp_uint32, 32> parameters = { 0xEDB88320, 0xFFFFFFFF, 0xFFFFFFFF, true, true };
-	return parameters;
-}
+const char testCommsResponse[] = { SERIAL_RC_OK, (char) 0xFF };
 
 class TSCpp
 {
@@ -56,7 +53,7 @@ public:
 	TSCpp(std::string port, int baud);
 	~TSCpp();
 
-	TSCpp* GetInstance() { return instance; };
+	static TSCpp* instance;
 
 	// Waits for TSC++ to finish
 	void WaitForThreads();
@@ -84,13 +81,11 @@ public:
 
 	bool CheckTimeout();
 
-	volatile struct statuses currentStatus;
+	DEEPROM EEPROM;
 
 private:
-	static TSCpp* instance;
 	serialib Serial;
 	DLog Log;
-	DEEPROM EEPROM;
 
 	std::thread recvThread;
 	std::thread timerThread;
@@ -120,13 +115,14 @@ private:
 	void timerFn();
 
 	// ~~Straight up ported from Speeduino:~~
-	Pages pages;
+	//Pages pages;
 
 	void loadPageValuesToBuffer(uint8_t pageNum, uint16_t offset, char* buffer, uint16_t length, int bufferOffset = 0);
 
 	void generateLiveValues(uint16_t offset, uint16_t packetLength);
 	byte getTSLogEntry(uint16_t byteNum);
 	uint16_t freeRam();
+	bool updatePageValues(uint8_t pageNum, uint16_t offset, const char* buffer, uint16_t length);
 };
 
 void gentbl(void);

@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 
-option(BUILD_EXAMPLES "Compile Examples" OFF)
+option(BUILD_EXAMPLES "Compile Examples" ON)
 
 project ("TSC++")
 
@@ -12,5 +12,5 @@ add_subdirectory ("TSCpp")
 
 if(BUILD_EXAMPLES)
 	add_subdirectory ("example")
-	add_subdirectory ("es-client-example")
+	#add_subdirectory ("es-client-example")
 endif(BUILD_EXAMPLES)

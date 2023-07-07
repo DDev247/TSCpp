@@ -4,7 +4,9 @@
 #include <thread>
 #include <chrono>
 
-TSCpp::TSCpp(std::string port, int baud) {
+TSCpp* TSCpp::instance = nullptr;
+
+TSCpp::TSCpp(std::string port, int baud) : EEPROM() {
 	// Check if tscpp directory exists and create if it doesn't.
 	int i = 0;
 	if (!CreateDirectory("tscpp", NULL) && (i = GetLastError()) != ERROR_ALREADY_EXISTS) {
@@ -12,10 +14,12 @@ TSCpp::TSCpp(std::string port, int baud) {
 		exit(1);
 	}
 	
+	instance = this;
+
 	// Init debug log
 	Log = DLog();
 
-	pages.InitPages();
+	//pages.InitPages();
 
 	Log.Add("Starting TSC++...");
 	Serial = serialib();
@@ -27,22 +31,12 @@ TSCpp::TSCpp(std::string port, int baud) {
 	}
 	Log.Add("Serial port opened and ready.");
 
-	// dump current logs because they are important
-	Log.Dump(3);
-
-	// initiate modules
-	Log.Add("Initiating modules...");
-	
-	pages = Pages();
-
-	Log.Add("Modules Initiated.");
-
 	Log.Add("Starting main recv loop...");
 	recvThread = std::thread(&TSCpp::threadFn, this);
 
 	Log.Add("Starting timer loop...");
 	timerThread = std::thread(&TSCpp::timerFn, this);
-	Log.Dump(4);
+	Log.DumpAll();
 }
 
 TSCpp::~TSCpp() {
@@ -74,6 +68,7 @@ void TSCpp::timerFn() {
 		currentStatus.loopsPerSecond = loops;
 		loops = 0;
 		Log.DumpAll();
+		//EEPROM.writeCacheToFlash();
 	}
 
 	Log.Add("Stopping timer loop...");

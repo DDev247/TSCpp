@@ -17,30 +17,44 @@ add_library (TSCpp
 
 	# pages
 	"src/pages.cpp"
+	"src/page_crc.cpp"
 	"include/pages.h"
+	"include/page_crc.h"
+
+	# eeprom?
+	"include/eeprom.h"
+	"src/eeprom.cpp"
+
+	# ?
+	"src/storage.cpp"
+	"include/storage.h"
+	"include/statuses.h"
+	"src/statuses.cpp"
+	"include/globals.h"
 
 	# ported speeduino source
 	# "src/speeduino/globals.cpp"
 	# "src/speeduino/utilities.cpp"
 	# 
 	# "src/speeduino/pages.cpp"
-	# "src/speeduino/table3d.cpp"
-	# "src/speeduino/table3d_axis_io.cpp"
-	# "src/speeduino/table3d_interpolate.cpp"
+	"src/table3d.cpp"
+	"src/table3d_axis_io.cpp"
+	"src/table3d_interpolate.cpp"
 
 	# ported speeduino headers
 	# "include/speeduino/globals.h"
 	# "include/speeduino/utilities.h"
 	# 
-	# "include/speeduino/int16_byte.h"
+	"include/int16_byte.h"
 	# "include/speeduino/pages.h"
-	# "include/speeduino/table3d.h"
-	# "include/speeduino/table3d_axes.h"
-	# "include/speeduino/table3d_axis_io.h"
-	# "include/speeduino/table3d_interpolate.h"
-	# "include/speeduino/table3d_typedefs.h"
-	# "include/speeduino/table3d_values.h"
- "include/eeprom.h" "src/eeprom.cpp" "include/storage.h" "include/status.h")
+	"include/table2d.h"
+	"include/table3d.h"
+	"include/table3d_axes.h"
+	"include/table3d_axis_io.h"
+	"include/table3d_interpolate.h"
+	"include/table3d_typedefs.h"
+	"include/table3d_values.h"
+	"include/utilities.h" "include/types.h")
 
 include_directories (GLOBAL "include")
 
@@ -50,5 +64,16 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 	set_property(TARGET TSCpp PROPERTY CXX_STANDARD 20)
 endif()
 
-add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
-add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
+if (MSVC)
+	add_compile_options ("/utf-8")
+	add_compile_options ("/utf-8")
+endif(MSVC)
+
+if (MINGW)
+	add_compile_options ("-Wno-narrowing")
+	add_compile_options ("-mfp16-format=ieee")
+endif(MINGW)
+# Wno-narrowing
+
+#add_compile_options("$<$<C_COMPILER_ID:GCC>:-mfp16-format=ieee>")
+#add_compile_options("$<$<CXX_COMPILER_ID:GCC>:-mfp16-format=ieee>")

@@ -195,7 +195,7 @@ void TSCpp::SerialCommand() {
     case 'b': // New EEPROM burn command to only burn a single page at a time 
         //if ((micros() > deferEEPROMWritesUntil)) { writeConfig(serialPayload[2]); } //Read the table number and perform burn. Note that byte 1 in the array is unused
         //else { BIT_SET(currentStatus.status4, BIT_STATUS4_BURNPENDING); }
-        //writeConfig(serialPayload[2]);
+        writeConfig(serialPayload[2]);
 
         SendReturnCode(SERIAL_RC_BURN_OK);
         break;
@@ -216,7 +216,7 @@ void TSCpp::SerialCommand() {
 
     case 'd': // Send a CRC32 hash of a given page
     {
-        uint32_t crc = ReverseBytes(pages.calculatePageCRC32(serialPayload[2]));
+        uint32_t crc = ReverseBytes(calculatePageCRC32(serialPayload[2]));
 
         serialPayload[0] = SERIAL_RC_OK;
         memcpy(&serialPayload[1], &crc, sizeof(crc));
@@ -288,18 +288,18 @@ void TSCpp::SerialCommand() {
         //2 - offset
         //2 - Length
         //1 - 1st New value
-        SendReturnCode(SERIAL_RC_OK);
-        pages.setPageValues(serialPayload[2], makeWord(serialPayload[4], serialPayload[3]), serialPayload, makeWord(serialPayload[6], serialPayload[5]), 7);
+        //SendReturnCode(SERIAL_RC_OK);
+        //setPageValue(serialPayload[2], makeWord(serialPayload[4], serialPayload[3]), serialPayload, makeWord(serialPayload[6], serialPayload[5]), 7);
 
-        /*if (updatePageValues(serialPayload[2], word(serialPayload[4], serialPayload[3]), &serialPayload[7], word(serialPayload[6], serialPayload[5])))
+        if (updatePageValues(serialPayload[2], makeWord(serialPayload[4], serialPayload[3]), &serialPayload[7], makeWord(serialPayload[6], serialPayload[5])))
         {
-            sendReturnCodeMsg(SERIAL_RC_OK);
+            SendReturnCode(SERIAL_RC_OK);
         }
         else
         {
             //This should never happen, but just in case
-            sendReturnCodeMsg(SERIAL_RC_RANGE_ERR);
-        }*/
+            SendReturnCode(SERIAL_RC_RANGE_ERR);
+        }
         break;
     }
 
@@ -605,7 +605,7 @@ uint16_t TSCpp::freeRam() {
 
 void TSCpp::loadPageValuesToBuffer(uint8_t pageNum, uint16_t offset, char* buffer, uint16_t length, int bufferOffset) {
     for (uint16_t i = 0; i < length; i++) {
-        buffer[bufferOffset + i] = pages.getPageValue(pageNum, offset + i);
+        buffer[bufferOffset + i] = getPageValue(pageNum, offset + i);
     }
 }
 
@@ -782,4 +782,18 @@ byte TSCpp::getTSLogEntry(uint16_t byteNum)
     }
 
     return statusValue;
+}
+
+bool TSCpp::updatePageValues(uint8_t pageNum, uint16_t offset, const char* buffer, uint16_t length)
+{
+    if ((offset + length) <= getPageSize(pageNum))
+    {
+        for (uint16_t i = 0; i < length; i++)
+        {
+            setPageValue(pageNum, (offset + i), buffer[i]);
+        }
+        return true;
+    }
+
+    return false;
 }
