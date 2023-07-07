@@ -1,5 +1,5 @@
 #pragma once
-#include <CRC.h>
+#include "../../submodules/CRCpp/inc/CRC.h"
 
 /*
  * Calculates and returns the CRC32 value of a given page of memory
