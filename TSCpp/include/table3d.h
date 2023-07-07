@@ -117,6 +117,25 @@ TABLE3D_GENERATOR(TABLE3D_GEN_GET_TABLE_VALUE)
   TABLE3D_GENERATOR(CONCRETE_TABLE_ACTION_INNER, action, ##__VA_ARGS__ ) \
   default: abort(); }
 
+#define CONCRETE_TABLE_ACTION_TABLE(testKey, action, table, ...) \
+  switch ((table_type_t)testKey) { \
+  TABLE3D_GENERATOR_TABLE(CONCRETE_TABLE_ACTION_INNER, action, table ) \
+  default: abort(); }
+
+#define CONCRETE_TABLE_ACTION_INNER_GET(size, xDomain, yDomain, action, data, start, ...) \
+  case TO_TYPE_KEY(size, xDomain, yDomain): action(size, xDomain, yDomain, data, start, ##__VA_ARGS__);
+#define CONCRETE_TABLE_ACTION_GET(testKey, action, data, start, ...) \
+  switch ((table_type_t)testKey) { \
+  TABLE3D_GENERATOR_GET(CONCRETE_TABLE_ACTION_INNER_GET, action, data, start) \
+  default: abort(); }
+
+#define CONCRETE_TABLE_ACTION_INNER_SET(size, xDomain, yDomain, action, data, start, value, ...) \
+  case TO_TYPE_KEY(size, xDomain, yDomain): action(size, xDomain, yDomain, data, start, value, ##__VA_ARGS__);
+#define CONCRETE_TABLE_ACTION_SET(testKey, action, data, start, value, ...) \
+  switch ((table_type_t)testKey) { \
+  TABLE3D_GENERATOR_SET(CONCRETE_TABLE_ACTION_INNER_SET, action, data, start, value) \
+  default: abort(); }
+
 // =============================== Table function calls =========================
 
 table_value_iterator rows_begin(const void *pTable, table_type_t key);

@@ -40,6 +40,27 @@ using table3d_axis_t = int16_t;
     GENERATOR(8, Rpm, Tps, ##__VA_ARGS__) \
     GENERATOR(16, Rpm, Load, ##__VA_ARGS__)
 
+#define TABLE3D_GENERATOR_TABLE(GENERATOR, action, pTable, ...) \
+    GENERATOR(6, Rpm, Load, action, pTable, ##__VA_ARGS__) \
+    GENERATOR(4, Rpm, Load, action, pTable, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Load, action, pTable, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Tps, action, pTable, ##__VA_ARGS__) \
+    GENERATOR(16, Rpm, Load, action, pTable, ##__VA_ARGS__)
+
+#define TABLE3D_GENERATOR_GET(GENERATOR, action, data, start, ...) \
+    GENERATOR(6, Rpm, Load, action, data, start, ##__VA_ARGS__) \
+    GENERATOR(4, Rpm, Load, action, data, start, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Load, action, data, start, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Tps, action, data, start, ##__VA_ARGS__) \
+    GENERATOR(16, Rpm, Load, action, data, start, ##__VA_ARGS__)
+#define TABLE3D_GENERATOR_SET(GENERATOR, action, data, start, value, ...) \
+    GENERATOR(6, Rpm, Load, action, data, start, value, ##__VA_ARGS__) \
+    GENERATOR(4, Rpm, Load, action, data, start, value, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Load, action, data, start, value, ##__VA_ARGS__) \
+    GENERATOR(8, Rpm, Tps, action, data, start, value, ##__VA_ARGS__) \
+    GENERATOR(16, Rpm, Load, action, data, start, value, ##__VA_ARGS__)
+
+
 // Each 3d table is given a distinct type based on size & axis domains
 // This encapsulates the generation of the type name
 #define TABLE3D_TYPENAME_BASE(size, xDom, yDom) table3d ## size ## xDom ## yDom
@@ -47,4 +68,20 @@ using table3d_axis_t = int16_t;
 #define CAT_HELPER(a, b) a ## b
 #define CONCAT(A, B) CAT_HELPER(A, B)
 
+/*
+#define CTA_GET_ROW_ITERATOR(size, xDomain, yDomain, pTable) \
+      return ((TABLE3D_TYPENAME_BASE(size, xDomain, yDomain)*)pTable)->values.begin();
+
+#define CTA_GET_X_ITERATOR(size, xDomain, yDomain, pTable) \
+      return ((TABLE3D_TYPENAME_BASE(size, xDomain, yDomain)*)pTable)->axisX.begin();
+
+#define CTA_GET_X_RITERATOR(size, xDomain, yDomain, pTable) \
+      return ((TABLE3D_TYPENAME_BASE(size, xDomain, yDomain)*)pTable)->axisX.rbegin();
+
+#define CTA_GET_Y_ITERATOR(size, xDomain, yDomain, pTable) \
+      return ((TABLE3D_TYPENAME_BASE(size, xDomain, yDomain)*)pTable)->axisY.begin();
+
+#define CTA_GET_Y_RITERATOR(size, xDomain, yDomain, pTable) \
+      return ((TABLE3D_TYPENAME_BASE(size, xDomain, yDomain)*)pTable)->axisY.rbegin();
+*/
 /** @} */
