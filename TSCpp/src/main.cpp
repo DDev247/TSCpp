@@ -31,6 +31,10 @@ TSCpp::TSCpp(std::string port, int baud) : EEPROM() {
 	}
 	Log.Add("Serial port opened and ready.");
 
+	Log.Add("Loading config...");
+	loadConfig();
+	Log.Add("Config loaded.");
+
 	Log.Add("Starting main recv loop...");
 	recvThread = std::thread(&TSCpp::threadFn, this);
 
@@ -67,6 +71,7 @@ void TSCpp::timerFn() {
 
 		currentStatus.loopsPerSecond = loops;
 		loops = 0;
+		EEPROM.writeFile();
 		//Log.DumpAll();
 		//EEPROM.writeCacheToFlash();
 	}
