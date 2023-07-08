@@ -25,12 +25,12 @@ std::string DLog::Prepare(std::string log) {
 
 void DLog::Add(std::string log) {
 	log = Prepare(log);
-	logs.push_back(log);
+	//logs.push_back(log);
 }
 
 void DLog::AddFront(std::string log) {
 	log = Prepare(log);
-	logs.push_front(log);
+	//logs.push_front(log);
 }
 
 void DLog::Dump(int amount) {

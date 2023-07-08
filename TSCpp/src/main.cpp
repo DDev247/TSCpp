@@ -26,7 +26,7 @@ TSCpp::TSCpp(std::string port, int baud) : EEPROM() {
 	Log.Add("Opening serial port...");
 	if (Serial.openDevice(port.c_str(), baud) != 1) {
 		Log.Add("ERROR: FAILED TO OPEN SERIAL PORT");
-		Log.Dump(3);
+		//Log.Dump(3);
 		exit(1);
 	}
 	Log.Add("Serial port opened and ready.");
@@ -36,7 +36,7 @@ TSCpp::TSCpp(std::string port, int baud) : EEPROM() {
 
 	Log.Add("Starting timer loop...");
 	timerThread = std::thread(&TSCpp::timerFn, this);
-	Log.DumpAll();
+	//Log.DumpAll();
 }
 
 TSCpp::~TSCpp() {
@@ -67,7 +67,7 @@ void TSCpp::timerFn() {
 
 		currentStatus.loopsPerSecond = loops;
 		loops = 0;
-		Log.DumpAll();
+		//Log.DumpAll();
 		//EEPROM.writeCacheToFlash();
 	}
 
