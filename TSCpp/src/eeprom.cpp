@@ -1,8 +1,10 @@
 
 #include <eeprom.h>
+#include <storage.h>
 
 DEEPROM::DEEPROM() {
     //eepromFile = std::fstream("tscpp/eeprom.bin", std::ios::binary | std::ios::in | std::ios::out);
+    loadConfig();
 }
 
 DEEPROM::~DEEPROM() {
