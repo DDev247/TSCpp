@@ -8,31 +8,29 @@ DEEPROM::DEEPROM() {
 }
 
 DEEPROM::~DEEPROM() {
-    eepromFile.flush();
-    eepromFile.close();
 }
 
 void DEEPROM::write(int address, uint8_t value) {
-    eepromFile = std::ofstream("tscpp/eeprom.bin", std::ios::binary);
+    std::ofstream file = std::ofstream("tscpp/eeprom.bin", std::ios::binary);
     if (!eepromFile) {
         std::cout << "Failed to open EEPROM file..." << std::endl;
         return;
     }
 
-    eepromFile.seekp(address);
-    eepromFile.put(value);
-    eepromFile.flush();
-    eepromFile.close();
+    file.seekp(address);
+    file.put(value);
+    file.flush();
+    file.close();
 }
 
 uint8_t DEEPROM::read(int address) {
-    eepromFile = std::ifstream("tscpp/eeprom.bin", std::ios::binary);
-    if (!eepromFile) {
+    std::ifstream file = std::ifstream("tscpp/eeprom.bin", std::ios::binary);
+    if (!file) {
         std::cout << "Failed to open EEPROM file..." << std::endl;
         return 0;
     }
-    eepromFile.seekg(address);
-    uint8_t result = eepromFile.get();
-    eepromFile.close();
+    file.seekg(address);
+    uint8_t result = file.get();
+    file.close();
     return result;
 }
