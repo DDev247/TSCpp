@@ -25,12 +25,12 @@ std::string DLog::Prepare(std::string log) {
 
 void DLog::Add(std::string log) {
 	log = Prepare(log);
-	//logs.push_back(log);
+	logs.push_back(log);
 }
 
 void DLog::AddFront(std::string log) {
 	log = Prepare(log);
-	//logs.push_front(log);
+	logs.push_front(log);
 }
 
 void DLog::Dump(int amount) {
@@ -49,7 +49,7 @@ void DLog::Dump(int amount) {
 void DLog::DumpAll() {
 	AddFront("Dumping all logs to file.");
 
-	for (int i = 0; i < logs.size(); i++) {
+	for (int i = 0; i < logs.size()-1; i++) {
 		logFile << logs.front() << std::endl;
 		logs.pop_front();
 	}

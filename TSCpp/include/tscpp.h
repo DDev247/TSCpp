@@ -114,6 +114,8 @@ private:
 	void threadFn();
 	void timerFn();
 
+	void reload2D();
+
 	// ~~Straight up ported from Speeduino:~~
 	//Pages pages;
 

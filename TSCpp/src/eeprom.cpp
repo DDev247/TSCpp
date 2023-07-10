@@ -10,6 +10,7 @@ DEEPROM::DEEPROM() {
     }
     std::cout << "EEPROM LOAD" << std::endl;
     file.read((char*)eeprom, eepromCount);
+    std::cout << "EEPROM LOADED" << std::endl;
 }
 
 DEEPROM::~DEEPROM() {

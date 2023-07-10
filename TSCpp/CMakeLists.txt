@@ -37,6 +37,7 @@ add_library (TSCpp
 	# "src/speeduino/utilities.cpp"
 	# 
 	# "src/speeduino/pages.cpp"
+	"src/table2d.cpp"
 	"src/table3d.cpp"
 	"src/table3d_axis_io.cpp"
 	"src/table3d_interpolate.cpp"
