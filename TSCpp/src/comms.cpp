@@ -5,7 +5,7 @@
 
 void TSCpp::Write(char value) {
 	std::stringstream ss;
-	ss << "[OUT] Writing character '" << value << "' / ";
+	ss << "[OUT] Writing character ";
 	ss << std::hex << (int) value;
 	
 	Log.Add(ss.str());
@@ -14,7 +14,7 @@ void TSCpp::Write(char value) {
 
 void TSCpp::Write(std::string value) {
 	std::stringstream ss;
-	ss << "[OUT] Writing string '" << value << "' / ";
+	ss << "[OUT] Writing string ";
 	for (int i = 0; i < value.length(); i++) {
 		std::string sep = i != value.length() ? ":" : "";
 		ss << std::hex << (int) value[i];
@@ -52,7 +52,7 @@ int TSCpp::Read() {
 	Serial.readChar(&value);
 
 	std::stringstream ss;
-	ss << "[IN] Recieved character '" << value << "' / ";
+	ss << "[IN] Recieved character ";
 	ss << std::hex << (int) value;
 
 	Log.Add(ss.str());

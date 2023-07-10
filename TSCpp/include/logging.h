@@ -12,6 +12,8 @@ public:
 	void Dump(int amount = 1);
 	void DumpAll();
 
+	inline std::list<std::string> GetLogs() { return logs; }
+
 private:
 	std::list<std::string> logs;
 	std::ofstream logFile;

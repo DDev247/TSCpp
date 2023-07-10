@@ -82,10 +82,10 @@ public:
 	bool CheckTimeout();
 
 	DEEPROM EEPROM;
+	DLog Log;
 
 private:
 	serialib Serial;
-	DLog Log;
 
 	std::thread recvThread;
 	std::thread timerThread;
