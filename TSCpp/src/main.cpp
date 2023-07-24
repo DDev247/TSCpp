@@ -19,11 +19,9 @@ TSCpp::TSCpp(std::string port, int baud) : EEPROM() {
 	// Init debug log
 	Log = DLog();
 
-	//pages.InitPages();
-
 	Log.Add("Starting TSC++...");
 	Serial = serialib();
-	Log.Add("Opening serial port...");
+	Log.Add("Opening serial port (" + port + ")...");
 	if (Serial.openDevice(port.c_str(), baud) != 1) {
 		Log.Add("ERROR: FAILED TO OPEN SERIAL PORT");
 		Log.Dump(3);
@@ -76,7 +74,6 @@ void TSCpp::timerFn() {
 
 		currentStatus.loopsPerSecond = loops;
 		loops = 0;
-        reload2D();
 		EEPROM.writeFile();
 		Log.DumpAll();
 	}
